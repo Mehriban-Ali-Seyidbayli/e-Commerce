@@ -1,30 +1,34 @@
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {AppColors} from '../../theme/colors';
+import {height} from '../../utils/constants';
+import {useNavigation} from '@react-navigation/native';
+import {PRODUCTLIST} from '../../utils/routes';
 
 const CategoryCard = ({item}) => {
-  console.log(item);
-  //   const renderItem = ({item}) => {
-  //     return (
-  //       <TouchableOpacity
-  //         onPress={() => selectCategory(item)}
-  //         style={
-  //           selectedCategory == item
-  //             ? styles.activeCategory
-  //             : styles.inactiveCategory
-  //         }>
-  //         <Text style={{fontWeight: 300}}>{item}</Text>
-  //       </TouchableOpacity>
-  //     );
-  //   };
+  const navigation = useNavigation();
+
   return (
-    <View style={styles.container}>
-      <Text>cate</Text>
-    </View>
+    <TouchableOpacity
+      onPress={() =>
+        navigation.navigate(PRODUCTLIST, {category: item, title: item})
+      }
+      style={styles.container}>
+      <Text
+        style={{fontWeight: '600', fontSize: 24, textTransform: 'capitalize'}}>
+        {item}
+      </Text>
+    </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 15,
+    flex: 1,
+    backgroundColor: AppColors.SOFTGRAY,
+    padding: 10,
+    minHeight: height / 8,
+    justifyContent: 'center',
+    marginVertical: 5,
   },
 });
 export default CategoryCard;

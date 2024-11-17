@@ -5,35 +5,39 @@ import {getRequest} from '../../service/verbs';
 import {CATEGORIES_URL} from '../../service/urls';
 import CategoryCard from '../../components/categories/categoryCard';
 import {screenStyle} from '../../styles/screenStyle';
+import Spinner from '../../components/ui/spinner';
 
-const Categories = ({onSelect}) => {
+const Categories = () => {
   const [categories, setCategories] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState();
+  const [loading, setLoading] = useState(false);
 
   const getCategories = () => {
+    setLoading(true);
     getRequest(CATEGORIES_URL)
       .then(response => {
         setCategories(response.data);
       })
       .catch(error => {
         console.log(error);
-      });
+      })
+      .finally(() => setLoading(false));
   };
-  const selectCategory = category => {
-    setSelectedCategory(category);
-    onSelect(category);
-  };
+
   useEffect(() => {
     getCategories();
   }, []);
 
   return (
     <View style={screenStyle.container}>
-      <FlatList
-        showsHorizontalScrollIndicator={false}
-        data={categories}
-        renderItem={({item}) => <CategoryCard item={item} />}
-      />
+      {loading ? (
+        <Spinner />
+      ) : (
+        <FlatList
+          showsHorizontalScrollIndicator={false}
+          data={categories}
+          renderItem={({item}) => <CategoryCard item={item} />}
+        />
+      )}
     </View>
   );
 };
